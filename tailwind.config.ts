@@ -10,6 +10,12 @@ module.exports = {
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    screens: {
+      mobile: { max: '789px' },
+      // => @media (max-width: 640px) { ... }
+      'desktop': '790px'
+      // => @media (min-width: 640px) { ... }
+    },
     extend: {
       borderRadius: {
         lg: 'var(--radius)',
