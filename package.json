@@ -10,11 +10,15 @@
     "format": "prettier --write .",
     "lint-and-format": "npm run lint && npm run format"
   },
+  "prisma": {
+    "seed": "node --loader ts-node/esm prisma/seed.ts"
+  },
   "dependencies": {
     "@prisma/client": "^5.22.0",
     "@radix-ui/react-slot": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "embla-carousel-react": "^8.3.1",
     "lint-staged": "^15.2.10",
     "lucide-react": "^0.460.0",
     "next": "15.0.3",
@@ -35,6 +39,7 @@
     "postcss": "^8",
     "prisma": "^5.22.0",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
   },
