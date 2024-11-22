@@ -4,15 +4,19 @@ import Image from 'next/image';
 
 // Database
 import { db } from '../_lib/prisma';
-import { Decimal } from '@prisma/client/runtime/library';
+// import { Decimal } from '@prisma/client/runtime/library';
 
 // Components
 import { Search } from '../_components/search';
 import { Navbar } from '../_components/navbar';
 import { Categories } from '../_components/categories';
 import { Banner } from '../_components/banner';
-import { ProductsRecommended } from '../_components/products-recommended';
-import { RestaurantsRecommended } from '../_components/restaurants-recommended';
+
+// import { ProductsRecommended } from '../_components/products-recommended';
+import { ListRestaurants } from '../_components/list-restaurants';
+import { ListProducts } from '../_components/list-products';
+import { Button } from '../_components/ui/button';
+import { ChevronRight } from 'lucide-react';
 
 const fetch = async () => {
   const getPizzasCategory = db.category.findFirst({
@@ -21,34 +25,18 @@ const fetch = async () => {
     },
   });
 
-  const getProductsRecommended = await db.product.findMany({
-    where: {
-      discountPercentage: {
-        gt: 0,
-      },
-    },
-  });
-
-  const serializaDataProducts = await getProductsRecommended.map((item) => ({
-    ...item,
-    price: item.price instanceof Decimal ? item.price.toNumber() : item.price,
-  }));
-
-  const getRestaurantsRecommended = await db.restaurant.findMany({
-    where: {
-      deliveryFee: 0,
-    },
-  });
-
-  const serializaDataRestaurants = await getRestaurantsRecommended.map(
-    (item) => ({
-      ...item,
-      deliveryFee:
-        item.deliveryFee instanceof Decimal
-          ? item.deliveryFee.toNumber()
-          : item.deliveryFee,
-    }),
-  );
+  // const getProductsRecommended = await (
+  //   await db.product.findMany({
+  //     where: {
+  //       discountPercentage: {
+  //         gt: 0,
+  //       },
+  //     },
+  //   })
+  // ).map((item) => ({
+  //   ...item,
+  //   price: item.price instanceof Decimal ? item.price.toNumber() : item.price,
+  // }));
 
   const getBurguers = await db.category.findFirst({
     where: {
@@ -56,36 +44,22 @@ const fetch = async () => {
     },
   });
 
-  const [
-    pizzasCategory,
-    productsRecommended,
-    burguers,
-    restaurantsRecommended,
-  ] = await Promise.all([
+  const [pizzasCategory, burguers] = await Promise.all([
     getPizzasCategory,
-    serializaDataProducts,
     getBurguers,
-    serializaDataRestaurants,
   ]);
 
   return {
     pizzasCategory,
-    productsRecommended,
     burguers,
-    restaurantsRecommended,
   };
 };
 
 const Home = async () => {
-  const {
-    pizzasCategory,
-    productsRecommended,
-    burguers,
-    restaurantsRecommended,
-  } = await fetch();
+  const { pizzasCategory, burguers } = await fetch();
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <Navbar />
 
       {/* Layout Destop */}
@@ -103,7 +77,7 @@ const Home = async () => {
 
         <div className="w-1/2">
           <Image
-            className="absolute top-60 right-20"
+            className="absolute top-56 right-24"
             src="/image-base.png"
             alt="Image to destop"
             width={248}
@@ -130,10 +104,23 @@ const Home = async () => {
       </div>
 
       <div className="px-5 pt-4 desktop:pt-6">
-        <ProductsRecommended
-          text="Pedidos Recomendados"
-          datasRecommended={productsRecommended}
-        />
+        <div className="flex items-center justify-between px-1">
+          <h2 className="text-1xl font-semibold">Produtos Recomendados</h2>
+          <Button
+            variant="ghost"
+            className="h-fit p-0 text-primary hover:bg-transparent"
+            asChild
+          >
+            <Link href="/products/recommended">
+              Ver todos
+              <ChevronRight size={16} />
+            </Link>
+          </Button>
+        </div>
+
+        <div className="flex gap-4 overflow-x-scroll px-5 [&::-webkit-scrollbar]:hidden">
+          <ListProducts />
+        </div>
       </div>
 
       <div className="px-5 pt-8 flex justify-around gap-4">
@@ -152,10 +139,23 @@ const Home = async () => {
       </div>
 
       <div className="px-5 pt-4 desktop:pt-6">
-        <RestaurantsRecommended
-          text="Restaurantes Recomendados"
-          datasRecommended={restaurantsRecommended}
-        />
+        <div className="flex items-center justify-between px-1">
+          <h2 className="text-1xl font-semibold">Restaurantes Recomendados</h2>
+          <Button
+            variant="ghost"
+            className="h-fit p-0 text-primary hover:bg-transparent"
+            asChild
+          >
+            <Link href="/restaurants/recommended">
+              Ver todos
+              <ChevronRight size={16} />
+            </Link>
+          </Button>
+        </div>
+
+        <div className="flex gap-4 overflow-x-scroll px-5 [&::-webkit-scrollbar]:hidden">
+          <ListRestaurants />
+        </div>
       </div>
     </div>
   );
