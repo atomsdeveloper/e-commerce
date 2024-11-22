@@ -29,7 +29,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Separator } from './ui/separator';
 
-const Header = () => {
+export const Navbar = () => {
   const { data } = useSession();
 
   const handleSignOutClick = () => signOut();
@@ -158,5 +158,3 @@ const Header = () => {
     </div>
   );
 };
-
-export default Header;

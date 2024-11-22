@@ -9,9 +9,9 @@ export const Banner = (props: ImageProps) => {
         alt={props.alt}
         width={600}
         height={500}
-        className="object-contain"
-        quality={100}
         sizes="100%"
+        className="rounded-lg object-cover"
+        quality={100}
       />
     </div>
   );
