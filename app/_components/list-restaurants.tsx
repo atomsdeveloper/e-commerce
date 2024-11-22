@@ -2,6 +2,7 @@ import React from 'react';
 
 // Database
 import { db } from '../_lib/prisma';
+import { Decimal } from '@prisma/client/runtime/library';
 
 // Components
 import { RestaurantItem } from './item-restaurant';
@@ -14,7 +15,16 @@ export const ListRestaurants = async () => {
   const session = await getServerSession(authOptions);
 
   // TODO: pegar restaurantes com maior número de pedidos
-  const restaurants = await db.restaurant.findMany({ take: 10 });
+  const restaurants = await (
+    await db.restaurant.findMany({ take: 10 })
+  ).map((item) => ({
+    ...item,
+    deliveryFee:
+      item.deliveryFee instanceof Decimal
+        ? item.deliveryFee.toNumber()
+        : item.deliveryFee,
+  }));
+
   const UserFavoriteRestaurant = await db.userFavoriteRestaurant.findMany({
     where: { userId: session?.user?.id },
   });

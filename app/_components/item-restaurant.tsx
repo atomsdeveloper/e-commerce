@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 
 // Database
-import { Restaurant, UserFavoriteRestaurant } from '@prisma/client';
+import { UserFavoriteRestaurant } from '@prisma/client';
 import { toggleFavoriteRestaurant } from '../_actions/restaurants';
 
 // Icons
@@ -22,8 +22,16 @@ import { toast } from 'sonner';
 // Format
 import { formatPrice } from '../_helpers/price';
 
+interface RestaurantProps {
+  id: string;
+  name: string;
+  imageUrl: string;
+  deliveryFee: number;
+  deliveryTimeMinutes: number;
+}
+
 interface RestaurantItemProps {
-  restaurant: Restaurant;
+  restaurant: RestaurantProps;
   className?: string;
   UserFavoriteRestaurant: UserFavoriteRestaurant[];
 }
