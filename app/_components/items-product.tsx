@@ -4,39 +4,33 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-// Sessions
-// import { useSession } from 'next-auth/react';
-
-// Icons
+// ICONS
 import { BikeIcon, StarIcon, TimerIcon } from 'lucide-react';
 
-// Components
+// COMPONENTS
 import { cn } from '../_lib/utils';
 
-// Format
-// import { formatPrice } from '../_helpers/price';
-
-interface ProductProps {
+interface onlyProductProps {
   price: number;
+  restaurant: {
+    name: string;
+  };
   id: string;
   name: string;
-  description: string;
   imageUrl: string;
+  createdAt: Date;
+  description: string;
   discountPercentage: number;
   restaurantId: string;
   categoryId: string;
-  createdAt: Date;
 }
 
 interface ProductItemProps {
-  product: ProductProps;
+  product: onlyProductProps;
   className?: string;
 }
 
 export const ProductItem = ({ product, className }: ProductItemProps) => {
-  // const { data } = useSession();
-  // console.log(data?.user.id);
-
   return (
     <div className={cn('min-w-[266px] max-w-[266px]', className)}>
       <div className="w-full space-y-3">
