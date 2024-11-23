@@ -9,7 +9,7 @@ import { db } from '../_lib/prisma';
 // Components
 import { Search } from '../_components/search';
 import { Navbar } from '../_components/navbar';
-import { Categories } from '../_components/categories';
+import { ListCategories } from '../_components/list-categories';
 import { Banner } from '../_components/banner';
 
 // import { ProductsRecommended } from '../_components/products-recommended';
@@ -59,7 +59,7 @@ const Home = async () => {
   const { pizzasCategory, burguers } = await fetch();
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col">
       <Navbar />
 
       {/* Layout Destop */}
@@ -90,8 +90,8 @@ const Home = async () => {
         <Search />
       </div>
 
-      <div className="px-5 pt-4 desktop:pt-6">
-        <Categories />
+      <div className="p-2 desktop:pt-6">
+        <ListCategories />
       </div>
 
       <div className="px-5 pt-8 desktop:hidden">
@@ -105,7 +105,7 @@ const Home = async () => {
 
       <div className="px-5 pt-4 desktop:pt-6">
         <div className="flex items-center justify-between px-1">
-          <h2 className="text-1xl font-semibold">Produtos Recomendados</h2>
+          <h2 className="text-1xl font-semibold">Pedidos Recomendados</h2>
           <Button
             variant="ghost"
             className="h-fit p-0 text-primary hover:bg-transparent"
