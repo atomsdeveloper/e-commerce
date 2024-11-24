@@ -6,7 +6,7 @@ import { ProductItem } from '@/app/_components/items-product';
 
 // DATABASE
 import { db } from '@/app/_lib/prisma';
-import { Decimal } from '@prisma/client/runtime/library';
+// import { Decimal } from '@prisma/client/runtime/library';
 
 const RecommendedProductsPage = async () => {
   const products = await db.product.findMany({
@@ -20,6 +20,9 @@ const RecommendedProductsPage = async () => {
       restaurant: {
         select: {
           name: true,
+          id: true,
+          deliveryFee: true,
+          deliveryTimeMinutes: true,
         },
       },
     },
@@ -33,17 +36,10 @@ const RecommendedProductsPage = async () => {
         <h2 className="mb-6 text-lg font-semibold">Pedidos Recomendados</h2>
         <div className="grid grid-cols-2 gap-6">
           {products.map((product) => {
-            const onlyProduct = {
-              ...product,
-              price:
-                product.price instanceof Decimal
-                  ? product.price.toNumber()
-                  : product.price,
-            };
             return (
               <ProductItem
-                key={onlyProduct.id}
-                product={onlyProduct}
+                key={product.id}
+                product={product}
                 className="min-w-full"
               />
             );
