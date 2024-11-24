@@ -20,6 +20,8 @@ export interface CartProduct
     };
   }> {
   quantity: number;
+  name: string;
+  imageUrl: string;
 }
 
 interface ICartContext {
