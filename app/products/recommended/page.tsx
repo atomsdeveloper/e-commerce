@@ -6,27 +6,40 @@ import { ProductItem } from '@/app/_components/items-product';
 
 // DATABASE
 import { db } from '@/app/_lib/prisma';
+import { Decimal } from '@prisma/client/runtime/library';
 // import { Decimal } from '@prisma/client/runtime/library';
 
 const RecommendedProductsPage = async () => {
-  const products = await db.product.findMany({
-    where: {
-      discountPercentage: {
-        gt: 0,
-      },
-    },
-    take: 20,
-    include: {
-      restaurant: {
-        select: {
-          name: true,
-          id: true,
-          deliveryFee: true,
-          deliveryTimeMinutes: true,
+  const products = await (
+    await db.product.findMany({
+      where: {
+        discountPercentage: {
+          gt: 0,
         },
       },
+      take: 10,
+      include: {
+        restaurant: {
+          select: {
+            name: true,
+            id: true,
+            deliveryFee: true,
+            deliveryTimeMinutes: true,
+          },
+        },
+      },
+    })
+  ).map((item) => ({
+    ...item,
+    price: item.price instanceof Decimal ? item.price.toNumber() : item.price,
+    restaurant: {
+      ...item.restaurant,
+      deliveryFee:
+        item.restaurant.deliveryFee instanceof Decimal
+          ? item.restaurant.deliveryFee.toNumber()
+          : item.restaurant.deliveryFee,
     },
-  });
+  }));
 
   // TODO: pegar produtos com mais pedidos
   return (
