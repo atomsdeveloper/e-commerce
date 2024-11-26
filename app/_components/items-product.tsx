@@ -10,23 +10,10 @@ import { BikeIcon, StarIcon, TimerIcon } from 'lucide-react';
 // COMPONENTS
 import { cn } from '../_lib/utils';
 
-interface onlyProductProps {
-  price: number;
-  restaurant: {
-    name: string;
-  };
-  id: string;
-  name: string;
-  imageUrl: string;
-  createdAt: Date;
-  description: string;
-  discountPercentage: number;
-  restaurantId: string;
-  categoryId: string;
-}
+import { TransformedProduct } from '../_types';
 
 interface ProductItemProps {
-  product: onlyProductProps;
+  product: TransformedProduct;
   className?: string;
 }
 
@@ -36,7 +23,7 @@ export const ProductItem = ({ product, className }: ProductItemProps) => {
       <div className="w-full space-y-3">
         {/* IMAGEM */}
         <div className="relative h-[136px] w-full">
-          <Link href={`/restaurants/${product.id}`}>
+          <Link href={`/products/${product.id}`}>
             <Image
               src={product.imageUrl}
               fill
@@ -65,7 +52,7 @@ export const ProductItem = ({ product, className }: ProductItemProps) => {
             <div className="flex items-center gap-1">
               <TimerIcon className="text-primary" size={14} />
               <span className="text-xs text-muted-foreground">
-                {product.price} min
+                {product.restaurant.deliveryTimeMinutes} min
               </span>
             </div>
           </div>

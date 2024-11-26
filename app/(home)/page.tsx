@@ -17,6 +17,7 @@ import { ListRestaurants } from '../_components/list-restaurants';
 import { ListProducts } from '../_components/list-products';
 import { Button } from '../_components/ui/button';
 import { ChevronRight } from 'lucide-react';
+import { Decimal } from '@prisma/client/runtime/library';
 
 const fetch = async () => {
   const getPizzasCategory = db.category.findFirst({
@@ -25,18 +26,36 @@ const fetch = async () => {
     },
   });
 
-  // const getProductsRecommended = await (
-  //   await db.product.findMany({
-  //     where: {
-  //       discountPercentage: {
-  //         gt: 0,
-  //       },
-  //     },
-  //   })
-  // ).map((item) => ({
-  //   ...item,
-  //   price: item.price instanceof Decimal ? item.price.toNumber() : item.price,
-  // }));
+  const getProducts = await (
+    await db.product.findMany({
+      where: {
+        discountPercentage: {
+          gt: 0,
+        },
+      },
+      take: 10,
+      include: {
+        restaurant: {
+          select: {
+            name: true,
+            id: true,
+            deliveryFee: true,
+            deliveryTimeMinutes: true,
+          },
+        },
+      },
+    })
+  ).map((item) => ({
+    ...item,
+    price: item.price instanceof Decimal ? item.price.toNumber() : item.price,
+    restaurant: {
+      ...item.restaurant,
+      deliveryFee:
+        item.restaurant.deliveryFee instanceof Decimal
+          ? item.restaurant.deliveryFee.toNumber()
+          : item.restaurant.deliveryFee,
+    },
+  }));
 
   const getBurguers = await db.category.findFirst({
     where: {
@@ -44,19 +63,21 @@ const fetch = async () => {
     },
   });
 
-  const [pizzasCategory, burguers] = await Promise.all([
+  const [pizzasCategory, products, burguers] = await Promise.all([
     getPizzasCategory,
+    getProducts,
     getBurguers,
   ]);
 
   return {
     pizzasCategory,
+    products,
     burguers,
   };
 };
 
 const Home = async () => {
-  const { pizzasCategory, burguers } = await fetch();
+  const { pizzasCategory, burguers, products } = await fetch();
 
   return (
     <div className="flex flex-col">
@@ -119,7 +140,7 @@ const Home = async () => {
         </div>
 
         <div className="flex gap-4 overflow-x-scroll px-5 [&::-webkit-scrollbar]:hidden">
-          <ListProducts />
+          <ListProducts products={products} />
         </div>
       </div>
 
