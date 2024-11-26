@@ -22,3 +22,8 @@ export interface TransformedProduct
     deliveryFee: number;
   };
 }
+
+export interface ProductDetailsProps {
+  product: TransformedProduct;
+  complementaryProducts: TransformedProduct[];
+}
