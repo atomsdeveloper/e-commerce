@@ -7,7 +7,6 @@ import { ProductItem } from '../../../_components/items-product';
 
 // DATABASE
 import { db } from '@/app/_lib/prisma';
-import { Decimal } from '@prisma/client/runtime/library';
 
 interface CategoriesPageProps {
   params: {
@@ -20,7 +19,7 @@ const CategoriesPage = async ({ params: { id } }: CategoriesPageProps) => {
     return notFound();
   }
 
-  const resposeProducts = await db.category.findUnique({
+  const product = await db.category.findUnique({
     where: {
       id,
     },
@@ -30,6 +29,9 @@ const CategoriesPage = async ({ params: { id } }: CategoriesPageProps) => {
           restaurant: {
             select: {
               name: true,
+              id: true,
+              deliveryFee: true,
+              deliveryTimeMinutes: true,
             },
           },
         },
@@ -37,7 +39,7 @@ const CategoriesPage = async ({ params: { id } }: CategoriesPageProps) => {
     },
   });
 
-  if (!resposeProducts) {
+  if (!product) {
     return notFound();
   }
 
@@ -45,25 +47,13 @@ const CategoriesPage = async ({ params: { id } }: CategoriesPageProps) => {
     <>
       <Navbar />
       <div className="px-5 py-6">
-        <h2 className="mb-6 text-lg font-semibold">{resposeProducts.name}</h2>
+        <h2 className="mb-6 text-lg font-semibold">{product.name}</h2>
         <div className="grid grid-cols-2 gap-6">
-          {resposeProducts.products.map((product) => {
-            const onlyProduct = {
-              ...product,
-              price:
-                product.price instanceof Decimal
-                  ? product.price.toNumber()
-                  : product.price,
-            };
-
-            return (
-              <ProductItem
-                key={onlyProduct.id}
-                product={onlyProduct}
-                className="min-w-full"
-              />
-            );
-          })}
+          <ProductItem
+            key={product.id}
+            product={product.products[0]}
+            className="min-w-full"
+          />
         </div>
       </div>
     </>
