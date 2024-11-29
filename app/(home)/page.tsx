@@ -17,7 +17,7 @@ import { ListRestaurants } from '../_components/list-restaurants';
 import { ListProducts } from '../_components/list-products';
 import { Button } from '../_components/ui/button';
 import { ChevronRight } from 'lucide-react';
-import { Decimal } from '@prisma/client/runtime/library';
+// import { Decimal } from '@prisma/client/runtime/library';
 
 const fetch = async () => {
   const getPizzasCategory = db.category.findFirst({
@@ -26,36 +26,24 @@ const fetch = async () => {
     },
   });
 
-  const getProducts = await (
-    await db.product.findMany({
-      where: {
-        discountPercentage: {
-          gt: 0,
-        },
+  const getProducts = await db.product.findMany({
+    where: {
+      discountPercentage: {
+        gt: 0,
       },
-      take: 10,
-      include: {
-        restaurant: {
-          select: {
-            name: true,
-            id: true,
-            deliveryFee: true,
-            deliveryTimeMinutes: true,
-          },
-        },
-      },
-    })
-  ).map((item) => ({
-    ...item,
-    price: item.price instanceof Decimal ? item.price.toNumber() : item.price,
-    restaurant: {
-      ...item.restaurant,
-      deliveryFee:
-        item.restaurant.deliveryFee instanceof Decimal
-          ? item.restaurant.deliveryFee.toNumber()
-          : item.restaurant.deliveryFee,
     },
-  }));
+    take: 10,
+    include: {
+      restaurant: {
+        select: {
+          name: true,
+          id: true,
+          deliveryFee: true,
+          deliveryTimeMinutes: true,
+        },
+      },
+    },
+  });
 
   const getBurguers = await db.category.findFirst({
     where: {

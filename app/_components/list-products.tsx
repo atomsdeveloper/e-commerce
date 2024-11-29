@@ -3,10 +3,10 @@ import React from 'react';
 // Components
 import { ProductItem } from './items-product';
 
-import { TransformedProduct } from '../_types';
+import { Product } from '../_types';
 
 interface ProductListProps {
-  products: TransformedProduct[];
+  products: Product[];
 }
 
 export const ListProducts = async ({ products }: ProductListProps) => {

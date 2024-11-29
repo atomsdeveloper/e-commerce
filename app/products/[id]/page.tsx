@@ -19,7 +19,6 @@ const ProductPage = async ({ params: { id } }: ProductPageProps) => {
 
   const products = await product(id);
   if (!products) return null;
-
   const juice = await juices(products);
 
   return (
