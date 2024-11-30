@@ -9,11 +9,10 @@ import { BikeIcon, StarIcon, TimerIcon } from 'lucide-react';
 
 // COMPONENTS
 import { cn } from '../_lib/utils';
-
-import { Product } from '../_types';
+import { TransformedProduct } from '../_types';
 
 interface ProductItemProps {
-  product: Product;
+  product: TransformedProduct;
   className?: string;
 }
 

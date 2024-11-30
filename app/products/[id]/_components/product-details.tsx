@@ -33,23 +33,13 @@ import { formatPrice, calculateProductTotalPrice } from '@/app/_helpers/price';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useContext, useState } from 'react';
 
-// DATABASE
-import { Prisma } from '@prisma/client';
-
 // CONTEXT
 import { CartContext } from '@/app/_context/cart';
+import { TransformedProduct } from '@/app/_types';
 
 interface ProductDetailsProps {
-  product: Prisma.ProductGetPayload<{
-    include: {
-      restaurant: true;
-    };
-  }>;
-  complementaryProducts: Prisma.ProductGetPayload<{
-    include: {
-      restaurant: true;
-    };
-  }>[];
+  product: TransformedProduct;
+  complementaryProducts: TransformedProduct[];
 }
 export const ProductDetails = ({
   product,

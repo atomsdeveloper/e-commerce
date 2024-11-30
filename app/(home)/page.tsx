@@ -38,6 +38,7 @@ const fetch = async () => {
       restaurant: {
         select: {
           name: true,
+          imageUrl: true,
           id: true,
           deliveryFee: true,
           deliveryTimeMinutes: true,

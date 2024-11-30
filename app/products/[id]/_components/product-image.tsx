@@ -1,15 +1,20 @@
 'use client';
 
 import React from 'react';
-
-import { Button } from '@/app/_components/ui/button';
-import { Product } from '@prisma/client';
-import { ChevronLeftIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+// COMPONENTS
+import { Button } from '@/app/_components/ui/button';
+
+// ICONS
+import { Restaurant } from '../../../_types';
+
+// TYPES
+import { ChevronLeftIcon } from 'lucide-react';
+
 interface ProductImageProps {
-  product: Pick<Product, 'name' | 'imageUrl'>;
+  product: Restaurant;
 }
 
 const ProductImage = ({ product }: ProductImageProps) => {

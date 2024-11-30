@@ -5,6 +5,7 @@ export type BaseProduct = Prisma.ProductGetPayload<{
     restaurant: {
       select: {
         name: true;
+        imageUrl: true;
         id: true;
         deliveryFee: true;
         deliveryTimeMinutes: true;
@@ -28,8 +29,9 @@ export interface ProductDetailsProps {
 }
 
 // Interface para os dados do restaurante
-interface Restaurant {
+export interface Restaurant {
   id: string;
+  imageUrl: string;
   name: string;
   deliveryFee: number;
   deliveryTimeMinutes: number;

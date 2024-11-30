@@ -7,7 +7,6 @@ import { ProductItem } from '@/app/_components/items-product';
 // DATABASE
 import { db } from '@/app/_lib/prisma';
 import { Decimal } from '@prisma/client/runtime/library';
-// import { Decimal } from '@prisma/client/runtime/library';
 
 const RecommendedProductsPage = async () => {
   const products = await (
@@ -19,14 +18,7 @@ const RecommendedProductsPage = async () => {
       },
       take: 10,
       include: {
-        restaurant: {
-          select: {
-            name: true,
-            id: true,
-            deliveryFee: true,
-            deliveryTimeMinutes: true,
-          },
-        },
+        restaurant: true,
       },
     })
   ).map((item) => ({

@@ -27,14 +27,7 @@ const CategoriesPage = async ({ params: { id } }: CategoriesPageProps) => {
     include: {
       products: {
         include: {
-          restaurant: {
-            select: {
-              name: true,
-              id: true,
-              deliveryFee: true,
-              deliveryTimeMinutes: true,
-            },
-          },
+          restaurant: true,
         },
       },
     },
