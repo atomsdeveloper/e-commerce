@@ -17,6 +17,7 @@ import { ListRestaurants } from '../_components/list-restaurants';
 import { ListProducts } from '../_components/list-products';
 import { Button } from '../_components/ui/button';
 import { ChevronRight } from 'lucide-react';
+import { Decimal } from '@prisma/client/runtime/library';
 // import { Decimal } from '@prisma/client/runtime/library';
 
 const fetch = async () => {
@@ -45,6 +46,18 @@ const fetch = async () => {
     },
   });
 
+  const getSerializeProducts = getProducts.map((item) => ({
+    ...item,
+    price: item.price instanceof Decimal ? item.price.toNumber() : item.price,
+    restaurant: {
+      ...item.restaurant,
+      deliveryFee:
+        item.restaurant.deliveryFee instanceof Decimal
+          ? item.restaurant.deliveryFee.toNumber()
+          : item.restaurant.deliveryFee,
+    },
+  }));
+
   const getBurguers = await db.category.findFirst({
     where: {
       name: 'Hambúrgueres',
@@ -53,7 +66,7 @@ const fetch = async () => {
 
   const [pizzasCategory, products, burguers] = await Promise.all([
     getPizzasCategory,
-    getProducts,
+    getSerializeProducts,
     getBurguers,
   ]);
 

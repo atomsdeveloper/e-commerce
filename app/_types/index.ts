@@ -1,6 +1,4 @@
 import { Prisma } from '@prisma/client';
-import { Decimal } from '@prisma/client/runtime/library';
-
 // Tipo base do Prisma
 export type BaseProduct = Prisma.ProductGetPayload<{
   include: {
@@ -33,7 +31,7 @@ export interface ProductDetailsProps {
 interface Restaurant {
   id: string;
   name: string;
-  deliveryFee: Decimal;
+  deliveryFee: number;
   deliveryTimeMinutes: number;
 }
 
@@ -44,11 +42,9 @@ export interface Product {
   imageUrl: string;
   createdAt: Date;
   description: string;
-  price: Decimal;
+  price: number;
   discountPercentage: number;
   restaurantId: string;
   categoryId: string;
   restaurant: Restaurant;
 }
-
-// Tipo para um array de produtos
