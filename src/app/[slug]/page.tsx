@@ -34,7 +34,7 @@ const StorePage = async ({ params }: StorePageProps) => {
         <h2 className="font-semibold">{store.name}</h2>
       </div>
       <div className="space-y-2 pt-16 text-center">
-        <h3 className="text-2xl font-semibold">Seja Bem-Vindo!</h3>
+        <h3 className="text-2xl font-semibold">Seja Bem-Vindo! Teste</h3>
         <p className="opacity-55">
           Escolha como prefere receber seu produto. Estamos aqui para oferecer
           praticidade e qualidade em cada detalhe.
